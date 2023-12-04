@@ -43,7 +43,7 @@ var db *sql.DB
 func initDB() {
 	var err error
 	// Replace with your database credentials
-	db, err = sql.Open("mysql", "user:password@tcp(localhost:3306)/dbname")
+	db, err = sql.Open("mysql", "DB_USER:DB_PASSWORD@tcp(DB_HOST:DB_PORT)/DB_NAME")
 	if err != nil {
 		log.Fatal(err)
 	}
