@@ -27,6 +27,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -49,10 +50,17 @@ func initDB() {
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
+	// Convert port to an integer and back to string to ensure it's a valid number
+	port, err := strconv.Atoi(dbPort)
+	if err != nil {
+		log.Fatalf("Invalid database port: %v", err)
+	}
+	dbPort = strconv.Itoa(port)
+
 	// Construct the connection string
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPass, dbHost, dbPort, dbName)
 
-	var err error
+	//var err error
 	// Replace with your database credentials
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
