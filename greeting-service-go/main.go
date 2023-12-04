@@ -20,6 +20,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"log"
@@ -28,9 +29,35 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
+type User struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+var db *sql.DB
+
+func initDB() {
+	var err error
+	// Replace with your database credentials
+	db, err = sql.Open("mysql", "user:password@tcp(localhost:3306)/dbname")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Check if the database is accessible
+	err = db.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func main() {
+
+	initDB()
 
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/greeter/greet", greet)
