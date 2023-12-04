@@ -41,9 +41,20 @@ type User struct {
 var db *sql.DB
 
 func initDB() {
+
+	// Read environment variables
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	// Construct the connection string
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPass, dbHost, dbPort, dbName)
+
 	var err error
 	// Replace with your database credentials
-	db, err = sql.Open("mysql", "DB_USER:DB_PASSWORD@tcp(DB_HOST:DB_PORT)/DB_NAME")
+	db, err = sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
