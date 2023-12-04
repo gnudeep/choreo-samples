@@ -72,6 +72,15 @@ func initDB() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Query database for version
+	var version string
+	err = db.QueryRow("SELECT VERSION()").Scan(&version)
+	if err != nil {
+		log.Fatalf("Failed to query database version: %v", err)
+	}
+	fmt.Printf("Connected to MySQL version: %s\n", version)
+
 }
 
 func main() {
